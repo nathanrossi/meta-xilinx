@@ -13,12 +13,12 @@
 			clocks = <&clk_cpu>;
 			compatible = "xlnx,microblaze-10.0";
 			d-cache-baseaddr = <0x0000000080000000>;
-			d-cache-highaddr = <0x00000000bfffffff>;
+			d-cache-highaddr = <0x00000000afffffff>;
 			d-cache-line-size = <0x20>;
 			d-cache-size = <0x4000>;
 			device_type = "cpu";
 			i-cache-baseaddr = <0x0000000080000000>;
-			i-cache-highaddr = <0x00000000bfffffff>;
+			i-cache-highaddr = <0x00000000afffffff>;
 			i-cache-line-size = <0x10>;
 			i-cache-size = <0x4000>;
 			interrupt-handle = <&microblaze_0_axi_intc>;
