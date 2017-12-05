@@ -19,7 +19,7 @@ append_target_provides[eventmask] = "bb.event.RecipeParsed"
 # itself is licensed under a modified MIT license which restricts use to Xilinx
 # devices only.
 LICENSE = "Proprietary"
-LIC_FILES_CHKSUM = "file://../../../../license.txt;md5=530190e8d7ebcdfeddbe396f3f20417f"
+LIC_FILES_CHKSUM = "file://license.txt;md5=530190e8d7ebcdfeddbe396f3f20417f"
 
 inherit deploy
 
@@ -33,15 +33,17 @@ COMPATIBLE_MACHINE_zynqmp = "zynqmp"
 
 PACKAGE_ARCH = "${MACHINE_ARCH}"
 
-S = "${WORKDIR}/git/lib/sw_apps/zynqmp_pmufw/src"
+S = "${WORKDIR}/git"
+APPDIR = "${S}/lib/sw_apps/zynqmp_pmufw"
 
 # The makefile does not handle parallelization
 PARALLEL_MAKE = ""
 
+do_configure[dirs] += "${APPDIR}/src"
 do_configure() {
 	# manually do the copy_bsp step first, so as to be able to fix up use of
 	# mb-* commands
-	${S}/../misc/copy_bsp.sh
+	${APPDIR}/misc/copy_bsp.sh
 }
 
 COMPILER = "${CC}"
@@ -55,7 +57,7 @@ ARCHIVER = "${AR}"
 # pmufw.
 EXTRA_COMPILER_FLAGS_append = " -DXGetPSVersion_Info=atexit"
 
-BSP_DIR ?= "${S}/../misc/zynqmp_pmufw_bsp"
+BSP_DIR ?= "${APPDIR}/misc/zynqmp_pmufw_bsp"
 BSP_TARGETS_DIR ?= "${BSP_DIR}/psu_pmu_0/libsrc"
 
 def bsp_make_vars(d):
@@ -73,7 +75,7 @@ do_compile() {
 	done
 
 	# --build-id=none is required due to linker script not defining a location for it.
-	oe_runmake CC="${CC}" CC_FLAGS="-MMD -MP -Wl,--build-id=none"
+	oe_runmake -C ${APPDIR}/src CC="${CC}" CC_FLAGS="-MMD -MP -Wl,--build-id=none"
 }
 
 do_install() {
@@ -83,12 +85,13 @@ do_install() {
 PMU_FIRMWARE_BASE_NAME ?= "${BPN}-${PKGE}-${PKGV}-${PKGR}-${MACHINE}-${DATETIME}"
 PMU_FIRMWARE_BASE_NAME[vardepsexclude] = "DATETIME"
 
+do_deploy[dirs] += "${APPDIR}/src"
 do_deploy() {
-	install -Dm 0644 ${B}/executable.elf ${DEPLOYDIR}/${PMU_FIRMWARE_BASE_NAME}.elf
+	install -Dm 0644 executable.elf ${DEPLOYDIR}/${PMU_FIRMWARE_BASE_NAME}.elf
 	ln -sf ${PMU_FIRMWARE_BASE_NAME}.elf ${DEPLOYDIR}/${BPN}-${MACHINE}.elf
 	ln -sf ${BPN}-${MACHINE}.elf ${DEPLOYDIR}/pmu-${MACHINE}.elf
-	${OBJCOPY} -O binary ${B}/executable.elf ${B}/executable.bin
-	install -m 0644 ${B}/executable.bin ${DEPLOYDIR}/${PMU_FIRMWARE_BASE_NAME}.bin
+	${OBJCOPY} -O binary executable.elf executable.bin
+	install -m 0644 executable.bin ${DEPLOYDIR}/${PMU_FIRMWARE_BASE_NAME}.bin
 	ln -sf ${PMU_FIRMWARE_BASE_NAME}.bin ${DEPLOYDIR}/${BPN}-${MACHINE}.bin
 	ln -sf ${BPN}-${MACHINE}.bin ${DEPLOYDIR}/pmu-${MACHINE}.bin
 }
