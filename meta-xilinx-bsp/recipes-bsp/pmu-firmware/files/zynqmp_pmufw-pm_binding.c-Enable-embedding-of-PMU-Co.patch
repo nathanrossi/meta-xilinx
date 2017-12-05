@@ -1,0 +1,46 @@
+From 71345d12b15c4d5e5d221b3a128e962d94bb3af1 Mon Sep 17 00:00:00 2001
+From: Nathan Rossi <nathan@nathanrossi.com>
+Date: Tue, 5 Dec 2017 15:10:40 +1000
+Subject: [PATCH] zynqmp_pmufw/pm_binding.c: Enable embedding of PMU Config
+ Object
+
+In order make PMU Firmware self contained during boot, allow the PMU
+config object to be embedded into the firmware binary. This avoids the
+need for U-Boot SPL to know about PMU firmware configuration and
+loading.
+
+This feature is enabled via a PM_CONFIG_EMBEDDED define.
+
+Signed-off-by: Nathan Rossi <nathan@nathanrossi.com>
+Upstream-Status: Pending
+---
+ lib/sw_apps/zynqmp_pmufw/src/pm_binding.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
+
+diff --git a/lib/sw_apps/zynqmp_pmufw/src/pm_binding.c b/lib/sw_apps/zynqmp_pmufw/src/pm_binding.c
+index c0144b1331..b0b5824745 100644
+--- a/lib/sw_apps/zynqmp_pmufw/src/pm_binding.c
++++ b/lib/sw_apps/zynqmp_pmufw/src/pm_binding.c
+@@ -46,6 +46,7 @@
+ #include "pm_gic_proxy.h"
+ #include "pm_requirement.h"
+ #include "pm_extern.h"
++#include "pm_config.h"
+ 
+ /* All GIC wakes in GPI1 */
+ #define PMU_IOMODULE_GPI1_GIC_WAKES_ALL_MASK \
+@@ -70,6 +71,11 @@ void XPfw_PmInit(void)
+ 	PmMasterDefaultConfig();
+ 
+ 	PmNodeConstruct();
++
++#if defined(PM_CONFIG_EMBEDDED)
++	extern const u32 XPm_ConfigObject[]; /* pm_cfg_obj.c */
++	PmConfigLoadObject((u32)&XPm_ConfigObject, 0xFFFFFFFFU);
++#endif
+ }
+ 
+ /**
+-- 
+2.15.0
+

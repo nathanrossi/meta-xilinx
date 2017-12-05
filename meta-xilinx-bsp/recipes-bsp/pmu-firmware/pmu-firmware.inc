@@ -44,6 +44,10 @@ do_configure() {
 	# manually do the copy_bsp step first, so as to be able to fix up use of
 	# mb-* commands
 	${APPDIR}/misc/copy_bsp.sh
+
+	# pull pmu config object source from FSBL, fixing up include
+	sed "s#pm_defs.h#../../../sw_services/xilpm/src/common/pm_defs.h#g" \
+		${S}/lib/sw_apps/zynqmp_fsbl/misc/pm_cfg_obj.c > pm_cfg_obj.c
 }
 
 COMPILER = "${CC}"
@@ -64,6 +68,12 @@ def bsp_make_vars(d):
     s = ["COMPILER", "CC", "COMPILER_FLAGS", "EXTRA_COMPILER_FLAGS", "ARCHIVER", "AR", "AS"]
     return " ".join(["\"%s=%s\"" % (v, d.getVar(v)) for v in s])
 
+CC_FLAGS = "-MMD -MP"
+# --build-id=none is required due to linker script not defining a location for it.
+CC_FLAGS_append = " -Wl,--build-id=none"
+# Enable embedded pm config object
+CC_FLAGS_append = " -DPM_CONFIG_EMBEDDED"
+
 do_compile() {
 	# the Makefile in ${S}/../misc/Makefile, does not handle CC, AR, AS, etc
 	# properly. So do its job manually. Preparing the includes first, then libs.
@@ -74,8 +84,7 @@ do_compile() {
 		oe_runmake -C $(dirname $i) -s libs ${@bsp_make_vars(d)}
 	done
 
-	# --build-id=none is required due to linker script not defining a location for it.
-	oe_runmake -C ${APPDIR}/src CC="${CC}" CC_FLAGS="-MMD -MP -Wl,--build-id=none"
+	oe_runmake -C ${APPDIR}/src CC="${CC}" CC_FLAGS="${CC_FLAGS}"
 }
 
 do_install() {
