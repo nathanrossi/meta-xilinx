@@ -79,7 +79,7 @@ do_install() {
 
 do_deploy() {
 	for DTB_FILE in `ls *.dtb *.dtbo`; do
-		install -Dm 0644 ${B}/${DTB_FILE} ${DEPLOYDIR}/${DTB_FILE}
+		install -Dm 0644 ${B}/${DTB_FILE} ${DEPLOYDIR}/devicetree/${DTB_FILE}
 	done
 }
 addtask deploy before do_build after do_install
