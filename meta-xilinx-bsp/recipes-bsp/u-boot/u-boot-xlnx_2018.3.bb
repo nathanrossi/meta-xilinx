@@ -15,6 +15,7 @@ LIC_FILES_CHKSUM = "file://README;beginline=1;endline=6;md5=157ab8408beab40cd8ce
 
 # u-boot-xlnx has support for these
 HAS_PLATFORM_INIT ?= " \
+		avnet_ultra96_rev1_config \
 		zynq_microzed_config \
 		zynq_zed_config \
 		zynq_zc702_config \
