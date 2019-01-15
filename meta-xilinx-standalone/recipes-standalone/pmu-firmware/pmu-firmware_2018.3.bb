@@ -9,10 +9,13 @@ PV = "${XILINX_RELEASE_VERSION}+git${SRCPV}"
 
 SRC_URI = "git://github.com/Xilinx/embeddedsw.git;protocol=https;nobranch=1"
 
+SRC_URI_append = " \
+    file://0001-Load-XPm_ConfigObject-at-boot.patch;striplevel=5 \
+    "
+
 COMPATIBLE_HOST = "microblaze.*-elf"
 COMPATIBLE_MACHINE = "^$"
 COMPATIBLE_MACHINE_zynqmp-pmu = "zynqmp-pmu"
-
 
 S = "${WORKDIR}/git/lib/sw_apps/zynqmp_pmufw/src"
 
@@ -23,6 +26,13 @@ do_configure() {
     # manually do the copy_bsp step first, so as to be able to fix up use of
     # mb-* commands
     ${S}/../misc/copy_bsp.sh
+}
+
+do_configure_append() {
+    # copy pm_cfg_obj.c, makefile wildcards handle compile/link
+    cp ${S}/../../zynqmp_fsbl/misc/pm_cfg_obj.c pm_cfg_obj.c
+    # point at the xilpm pm_defs.h
+    sed -i 's!"pm_defs.h"!"../../../sw_services/xilpm/src/common/pm_defs.h"!' pm_cfg_obj.c
 }
 
 COMPILER = "${CC}"

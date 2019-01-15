@@ -1,0 +1,38 @@
+From fe938b54f8e64e98514c55c20ad5c6a4fd44f6a9 Mon Sep 17 00:00:00 2001
+From: Mike Looijmans <mike.looijmans@topic.nl>
+Date: Tue, 15 Jan 2019 19:33:25 +1000
+Subject: [PATCH] Load XPm_ConfigObject at boot
+
+This appears to be something that the FSBL does, but not the SPL loader,
+so do it here.
+
+Signed-off-by: Mike Looijmans <mike.looijmans@topic.nl>
+Signed-off-by: Nathan Rossi <nathan@nathanrossi.com>
+Upstream-Status: Denied
+---
+ lib/sw_apps/zynqmp_pmufw/src/pm_binding.c | 5 +++++
+ 1 file changed, 5 insertions(+)
+
+diff --git a/lib/sw_apps/zynqmp_pmufw/src/pm_binding.c b/lib/sw_apps/zynqmp_pmufw/src/pm_binding.c
+index 9553120c41..6fcf87ed34 100644
+--- a/lib/sw_apps/zynqmp_pmufw/src/pm_binding.c
++++ b/lib/sw_apps/zynqmp_pmufw/src/pm_binding.c
+@@ -43,6 +43,9 @@
+ #include "pm_extern.h"
+ #include "pm_usb.h"
+ #include "pm_hooks.h"
++#include "pm_config.h"
++
++extern u32 XPm_ConfigObject[]; /* pm_cfg_obj.c */
+ 
+ /* All GIC wakes in GPI1 */
+ #define PMU_IOMODULE_GPI1_GIC_WAKES_ALL_MASK \
+@@ -82,6 +85,8 @@ void XPfw_PmInit(void)
+ 	if (bootType == PM_COLD_BOOT) {
+ 		PmMasterDefaultConfig();
+ 		PmNodeConstruct();
++
++		PmConfigLoadObject((u32)&XPm_ConfigObject, 0xFFFFFFFFU);
+ 	}
+ }
+ 
