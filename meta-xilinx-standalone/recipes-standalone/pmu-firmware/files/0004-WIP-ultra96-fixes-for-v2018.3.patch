@@ -1,0 +1,21 @@
+From c06e13c66abb6148943a6640768f1a51b044c497 Mon Sep 17 00:00:00 2001
+From: Nathan Rossi <nathan@nathanrossi.com>
+Date: Thu, 31 Jan 2019 23:06:04 +1000
+Subject: [PATCH] WIP: ultra96 - fixes for v2018.3
+
+---
+ lib/sw_apps/zynqmp_pmufw/misc/xparameters.h | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/lib/sw_apps/zynqmp_pmufw/misc/xparameters.h b/lib/sw_apps/zynqmp_pmufw/misc/xparameters.h
+index 780897a79a..5ee221ed5b 100644
+--- a/lib/sw_apps/zynqmp_pmufw/misc/xparameters.h
++++ b/lib/sw_apps/zynqmp_pmufw/misc/xparameters.h
+@@ -953,6 +953,7 @@
+ #define XPAR_XSYSMONPSU_0_DEVICE_ID XPAR_PSU_AMS_DEVICE_ID
+ #define XPAR_XSYSMONPSU_0_BASEADDR 0xFFA50000
+ #define XPAR_XSYSMONPSU_0_HIGHADDR 0xFFA5FFFF
++#define XPAR_XSYSMONPSU_0_REF_FREQMHZ 51.724137
+ 
+ 
+ /******************************************************************/

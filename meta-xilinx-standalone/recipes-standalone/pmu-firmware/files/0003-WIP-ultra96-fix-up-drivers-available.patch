@@ -1,0 +1,81 @@
+From c28fbfdd36d46c95b9077d358a0722e319bfe3af Mon Sep 17 00:00:00 2001
+From: Nathan Rossi <nathan@nathanrossi.com>
+Date: Thu, 31 Jan 2019 23:03:15 +1000
+Subject: [PATCH] WIP: ultra96 - fix up drivers available
+
+---
+ lib/sw_apps/zynqmp_pmufw/misc/drivers.txt |  7 ++--
+ lib/sw_apps/zynqmp_pmufw/misc/xemacps_g.c | 43 -----------------------
+ 2 files changed, 5 insertions(+), 45 deletions(-)
+ delete mode 100644 lib/sw_apps/zynqmp_pmufw/misc/xemacps_g.c
+
+diff --git a/lib/sw_apps/zynqmp_pmufw/misc/drivers.txt b/lib/sw_apps/zynqmp_pmufw/misc/drivers.txt
+index 6af498102f..295f800380 100644
+--- a/lib/sw_apps/zynqmp_pmufw/misc/drivers.txt
++++ b/lib/sw_apps/zynqmp_pmufw/misc/drivers.txt
+@@ -2,11 +2,14 @@ csudma
+ uartps
+ ipipsu
+ ttcps
+-emacps
+ iicps
+ sdps
+-qspipsu
+ gpiops
+ usbpsu
+ wdtps
+ sysmonpsu
++spips
++dpdma
++video_common
++avbuf
++dppsu
+diff --git a/lib/sw_apps/zynqmp_pmufw/misc/xemacps_g.c b/lib/sw_apps/zynqmp_pmufw/misc/xemacps_g.c
+deleted file mode 100644
+index 293d17f382..0000000000
+--- a/lib/sw_apps/zynqmp_pmufw/misc/xemacps_g.c
++++ /dev/null
+@@ -1,43 +0,0 @@
+-/******************************************************************************
+- *
+- * Copyright (C) 2010 - 2017 Xilinx, Inc.  All rights reserved.
+- *
+- * Permission is hereby granted, free of charge, to any person obtaining a copy
+- * of this software and associated documentation files (the "Software"), to deal
+- * in the Software without restriction, including without limitation the rights
+- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+- * copies of the Software, and to permit persons to whom the Software is
+- * furnished to do so, subject to the following conditions:
+- *
+- * The above copyright notice and this permission notice shall be included in
+- * all copies or substantial portions of the Software.
+- *
+- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
+- * XILINX  BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+- * WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF
+- * OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+- * SOFTWARE.
+- *
+- * Except as contained in this notice, the name of the Xilinx shall not be used
+- * in advertising or otherwise to promote the sale, use or other dealings in
+- * this Software without prior written authorization from Xilinx.
+- *
+- ******************************************************************************/
+-
+-#include "xparameters.h"
+-#include "xemacps.h"
+-
+-/*
+-* The configuration table for devices
+-*/
+-
+-XEmacPs_Config XEmacPs_ConfigTable[XPAR_XEMACPS_NUM_INSTANCES] =
+-{
+-	{
+-		XPAR_PSU_ETHERNET_3_DEVICE_ID,
+-		XPAR_PSU_ETHERNET_3_BASEADDR,
+-		XPAR_PSU_ETHERNET_3_IS_CACHE_COHERENT
+-	}
+-};
