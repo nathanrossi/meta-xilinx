@@ -1,0 +1,24 @@
+From cf4196ece799bdcc9cfddb7a6729df543706fbb0 Mon Sep 17 00:00:00 2001
+From: Nathan Rossi <nathan@nathanrossi.com>
+Date: Fri, 1 Feb 2019 19:11:08 +1000
+Subject: [PATCH] arm64: zynqmp: Remove WDT for ultra96
+
+Its broken? hangs boot up.
+
+Signed-off-by: Nathan Rossi <nathan@nathanrossi.com>
+---
+ configs/avnet_ultra96_rev1_defconfig | 2 --
+ 1 file changed, 2 deletions(-)
+
+diff --git a/configs/avnet_ultra96_rev1_defconfig b/configs/avnet_ultra96_rev1_defconfig
+index 7e337190fd..8df21e41b0 100644
+--- a/configs/avnet_ultra96_rev1_defconfig
++++ b/configs/avnet_ultra96_rev1_defconfig
+@@ -78,7 +78,5 @@ CONFIG_USB_ULPI=y
+ CONFIG_USB_STORAGE=y
+ CONFIG_USB_GADGET=y
+ CONFIG_USB_GADGET_DOWNLOAD=y
+-CONFIG_WDT=y
+-CONFIG_WDT_CDNS=y
+ CONFIG_OF_LIBFDT_OVERLAY=y
+ CONFIG_EFI_LOADER_BOUNCE_BUFFER=y

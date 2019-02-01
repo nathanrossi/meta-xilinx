@@ -31,3 +31,6 @@ HAS_PLATFORM_INIT ?= " \
 		xilinx_zynqmp_zc1254_revA_config \
 		"
 
+FILESEXTRAPATHS_prepend := "${THISDIR}/files:"
+SRC_URI_append = " file://0001-arm64-zynqmp-Remove-WDT-for-ultra96.patch "
+
