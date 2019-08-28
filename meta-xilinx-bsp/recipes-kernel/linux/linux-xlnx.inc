@@ -54,6 +54,7 @@ SRC_URI_append = " file://xilinx-kmeta;type=kmeta;name=xilinx-kmeta;destsuffix=x
 
 # MicroBlaze BSP fragments
 KERNEL_FEATURES_append_kc705-microblazeel = " bsp/kc705-microblazeel/kc705-microblazeel.scc"
+KERNEL_FEATURES_append_ml605-qemu-microblazeel = " bsp/ml605-microblazeel/ml605-microblazeel.scc"
 
 KERNEL_FEATURES_append_zynqmp = "${@bb.utils.contains('DISTRO_FEATURES', 'xen', ' bsp/xilinx/xen.scc', '', d)}"
 
