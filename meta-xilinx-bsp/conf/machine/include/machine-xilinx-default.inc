@@ -3,7 +3,7 @@
 MACHINE_FEATURES_BACKFILL_CONSIDERED += "rtc"
 
 # File System Configuration
-IMAGE_FSTYPES ?= "tar.gz cpio cpio.gz.u-boot"
+IMAGE_FSTYPES ?= "tar.gz cpio cpio.gz cpio.gz.u-boot"
 
 # Kernel Configuration
 XILINX_DEFAULT_KERNEL := "linux-xlnx"
