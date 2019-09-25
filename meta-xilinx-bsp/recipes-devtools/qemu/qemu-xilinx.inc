@@ -32,6 +32,9 @@ PACKAGECONFIG_remove = "kvm"
 # Enable libgcrypt
 PACKAGECONFIG_append = " gcrypt"
 
+# python 3 or newer not supported in v2.11.1
+EXTRA_OECONF_remove = " --python=${HOSTTOOLS_DIR}/python3"
+
 DISABLE_STATIC_pn-${PN} = ""
 
 PTEST_ENABLED = ""
