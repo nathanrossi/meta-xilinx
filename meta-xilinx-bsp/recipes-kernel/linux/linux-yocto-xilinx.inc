@@ -23,3 +23,4 @@ COMPATIBLE_MACHINE_microblaze = "microblaze"
 # Default kernel config fragements for specific machines
 KERNEL_FEATURES_append_kc705-microblazeel = " bsp/kc705-microblazeel/kc705-microblazeel.scc"
 
+KERNEL_FEATURES_append_qemumicroblazeel = " bsp/qemumicroblazeel-virt/qemumicroblazeel-virt.scc"
